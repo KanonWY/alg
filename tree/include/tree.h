@@ -36,16 +36,15 @@
 //
 // 树的深度等于高度
 
-struct TreeNode {
+struct TreeNode
+{
     TreeNode* left;
     TreeNode* right;
     int value;
 
-    TreeNode(int v) : left(nullptr), right(nullptr), value(v) {
-    }
+    TreeNode(int v) : left(nullptr), right(nullptr), value(v) {}
 
-    TreeNode(int v, TreeNode* l, TreeNode* r) : left(l), right(r), value(v) {
-    }
+    TreeNode(int v, TreeNode* l, TreeNode* r) : left(l), right(r), value(v) {}
 };
 
 /**
@@ -54,8 +53,11 @@ struct TreeNode {
  */
 TreeNode* buildTree();
 
-
-
+/**
+ *
+ * \brief 前序遍历删除一棵树
+ *
+ */
 void deleteTree(TreeNode* root);
 
 /**
@@ -63,8 +65,7 @@ void deleteTree(TreeNode* root);
  * \param node
  * \return
  */
-std::vector<TreeNode *> getLeaf(TreeNode* node);
-
+std::vector<TreeNode*> getLeaf(TreeNode* node);
 
 /**
  * \brief 递归地获取一棵二叉树的叶子节点
@@ -72,9 +73,18 @@ std::vector<TreeNode *> getLeaf(TreeNode* node);
  * \param out
  * \return
  */
-void getleaf_recursive(TreeNode* node, std::vector<TreeNode *>& out);
+void getleaf_recursive(TreeNode* node, std::vector<TreeNode*>& out);
 
+/**
+ * \brief 非递归的前序遍历树
+ */
 std::vector<int> preorderTravel(TreeNode* node);
+
+/**
+ * \brief 递归的前序遍历树
+ *
+ */
+void preorderTravel(TreeNode* node, std::vector<int>& out);
 
 std::vector<int> postorderTravel(TreeNode* node);
 
@@ -83,9 +93,8 @@ std::vector<int> midorderTravel(TreeNode* node);
 std::vector<int> layerTravel(TreeNode* node);
 
 /**
- * \brief 给定一个二叉树和一个整数 sum, 找出所有根节点到叶子节点的路径，这些路径上的节点值累加为 sum 的路径
- * \param node
- * \param target
- * \return
+ * \brief 给定一个二叉树和一个整数 sum,
+ * 找出所有根节点到叶子节点的路径，这些路径上的节点值累加为 sum 的路径 \param
+ * node \param target \return
  */
 std::vector<std::vector<int>> treepathOfSum(TreeNode* node, int target);
