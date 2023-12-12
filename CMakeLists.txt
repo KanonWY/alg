@@ -13,9 +13,8 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/release/bin")
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/release/lib")
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/release/arc")
 
-
 ######################################################
-#### GTEST
+#### 支持 googletest, v1.14.0 tag 则需要 C++14 以上的版本
 include(FetchContent)
 FetchContent_Declare(
         googletest
@@ -25,20 +24,9 @@ FetchContent_Declare(
 set(gtest_force_shard_crt ON CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(googletest)
 
-#include(FetchContent)
-#FetchContent_Declare(
-#        Catch2
-#        GIT_REPOSITORY https://github.com/catchorg/Catch2.git
-#        GIT_TAG v3.5.0
-#)
-#FetchContent_MakeAvailable(Catch2)
-
-
-
-
+include(GoogleTest)
 
 add_subdirectory(tree)
 add_subdirectory(dp)
 add_subdirectory(recrsive)
 add_subdirectory(string)
-add_subdirectory(RAII)

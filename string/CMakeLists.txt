@@ -10,4 +10,10 @@ endforeach()
 
 foreach(demo_name ${EXEC_NAME_LIST})
     add_executable(${demo_name} src/${demo_name}.cpp)
+
+    # 链接 gtest, 支持单元测试
+    target_link_libraries(${demo_name} PRIVATE GTest::gtest_main)
+    gtest_discover_tests(${demo_name}
+      EXTRA_ARGS --gtest_color=yes
+      )
 endforeach()

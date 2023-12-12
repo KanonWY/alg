@@ -1,5 +1,3 @@
-#include <windows.h>
-
 #include "tree.h"
 #include <gtest/gtest.h>
 

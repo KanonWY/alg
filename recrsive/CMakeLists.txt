@@ -7,7 +7,12 @@ foreach(FILE_PATH ${MY_FILES})
     list(APPEND EXEC_NAME_LIST ${FILE_NAME})
 endforeach()
 
-
 foreach(demo_name ${EXEC_NAME_LIST})
     add_executable(${demo_name} src/${demo_name}.cpp)
+
+    # 支持 gtest， 测试算法的正确性
+    target_link_libraries(${demo_name} PRIVATE GTest::gtest_main)
+    gtest_discover_tests(${demo_name}
+      EXTRA_ARGS --gtest_color=yes
+      )
 endforeach()
