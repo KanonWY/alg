@@ -28,11 +28,3 @@ private:
         return nullptr;
     }
 };
-
-int main()
-{
-    Solution s;
-    auto res = s.perfterTree(11);
-
-    return 0;
-}

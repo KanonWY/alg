@@ -1,19 +1,45 @@
-#include <iostream>
 #include <vector>
+#include <iostream>
 
-/**
- * \brief 归并两个已经排序的数组
- * \param sub1 已排序的数组1
- * \param sub2 已排序的数组2
- * \param sub  最终排序结果
- */
-void merge_sort_two_vec(std::vector<int>& sub1, std::vector<int>& sub2, std::vector<int>& sub) {
+class Solution {
+public:
+    static void mergesort_ordered(const std::vector<int>& arr1,
+                                  const std::vector<int>& arr2,
+                                  std::vector<int>& res) {
+        int i = 0;
+        int j = 0;
+        while (i < arr1.size() && j < arr2.size()) {
+            if (arr1[i] <= arr2[j]) {
+                res.push_back(arr1[i]);
+                ++i;
+            } else {
+                res.push_back(arr2[j]);
+                ++j;
+            }
+        }
 
-}
+        for (; i < arr1.size(); ++i) {
+            res.push_back(arr1[i]);
+        }
+        for (; j < arr2.size(); ++j) {
+            res.push_back(arr2[j]);
+        }
+    }
 
+    static void merge_sort(const std::vector<int>& input,
+                           std::vector<int>& out) {
+
+    }
+};
 
 int main() {
-    std::vector<int> vec1{2,5,8,20};
-    std::vector<int> vec2{1,2,3,4};
+    const std::vector<int> arr1{1, 3, 4, 8, 10};
+    const std::vector<int> arr2{2, 5, 9, 10, 11, 200};
+    std::vector<int> res;
+    res.reserve(arr1.size() + arr2.size());
+    Solution::mergesort_ordered(arr1, arr2, res);
+    for (const auto& item: res) {
+        std::cout << item << " ";
+    }
     return 0;
 }

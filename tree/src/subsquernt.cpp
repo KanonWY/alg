@@ -13,11 +13,3 @@ public:
         };
     }
 };
-
-
-
-int main()
-{
-    std::cout << "sub seq" << std::endl;
-    return 0;
-}

@@ -3,6 +3,7 @@
 #include <stack>
 #include <queue>
 #include <iostream>
+#include <functional>
 
 
 std::vector<TreeNode *> getLeaf(TreeNode* node) {
@@ -30,6 +31,16 @@ std::vector<TreeNode *> getLeaf(TreeNode* node) {
     }
     return res;
 }
+
+void getleaf_recursive(TreeNode* node, std::vector<TreeNode *>& out) {
+    if (!node) return;
+    if (!node->left, !node->right) {
+        out.push_back(node);
+    }
+    getleaf_recursive(node->left, out);
+    getleaf_recursive(node->right, out);
+}
+
 
 std::vector<int> preorderTravel(TreeNode* node) {
     if (!node) {
@@ -131,4 +142,81 @@ std::vector<int> postorderTravel(TreeNode* node) {
     return res;
 }
 
-int PathSumOfTree(TreeNode* root, int number) { return 0; }
+std::vector<std::vector<int>> treepathOfSum(TreeNode* node, int target) {
+    if (!node) {
+        return {};
+    }
+    std::vector<std::vector<int>> res;
+
+    // lambda 递归函数, 必须使用 std::function 指明数据的类型
+    std::function<void(TreeNode* node, int&, int, std::vector<int>&, std::vector<std::vector<int>>&)> preorder = [&]
+    (
+        TreeNode* node,
+        int& path_value,
+        int target,
+        std::vector<int>& path,
+        std::vector<std::vector<int>>& res) -> void {
+        if (!node) {
+            return;
+        }
+        path_value += node->value;
+        path.push_back(node->value);
+        if (!node->left && !node->right && path_value == target) {
+            res.push_back(path);
+        }
+        preorder(node->left, path_value, target, path, res);
+        preorder(node->right, path_value, target, path, res);
+        path_value -= node->value;
+        path.pop_back();
+    };
+
+    std::vector<int> path;
+    int path_value{0};
+    preorder(node, path_value, target, path, res);
+    return res;
+}
+
+/**
+ *          1
+ *         / \
+ *        2   3
+ *      / \   / \
+ *     4   5 6   7
+ *
+ *
+ *
+ * \brief 
+ * \return
+ */
+TreeNode* buildTree() {
+    auto* a = new TreeNode(1);
+    auto* b = new TreeNode(2);
+    auto* c = new TreeNode(3);
+    auto* d = new TreeNode(4);
+    auto* e = new TreeNode(5);
+    auto* f = new TreeNode(6);
+    auto* g = new TreeNode(7);
+
+    a->left = b;
+    a->right = c;
+    b->left = d;
+    b->right = e;
+    c->left = f;
+    c->right = g;
+    return a;
+}
+
+/**
+ * \brief 前序遍历删除
+ * \param root
+ */
+void deleteTree(TreeNode* root) {
+    if (root) {
+        const auto left = root->left;
+        const auto right = root->right;
+        std::cout << "delete node: " << root->value << std::endl;
+        delete root;
+        deleteTree(left);
+        deleteTree(right);
+    }
+}

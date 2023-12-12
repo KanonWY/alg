@@ -7,9 +7,25 @@ foreach(FILE_PATH ${MY_FILES})
     list(APPEND EXEC_NAME_LIST ${FILE_NAME})
 endforeach()
 
+#list(APPEND CMAKE_MODULE_PATH ${catch2_SOURCE_DIR}/extras)
+#include(Catch)
 
+#foreach(demo_name ${EXEC_NAME_LIST})
+#    add_executable(${demo_name} src/${demo_name}.cpp treebase.cpp)
+#    target_include_directories(${demo_name} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include)
+#    target_link_libraries(${demo_name} PRIVATE Catch2::Catch2WithMain)
+#    catch_discover_tests(${demo_name})
+#endforeach()
+
+include(GoogleTest)
 foreach(demo_name ${EXEC_NAME_LIST})
     add_executable(${demo_name} src/${demo_name}.cpp treebase.cpp)
     target_include_directories(${demo_name} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include)
-    message(STATUS "---> ${demo_name}")
+    target_link_libraries(${demo_name} PRIVATE GTest::gtest_main)
+    gtest_discover_tests(${demo_name}
+        EXTRA_ARGS --gtest_color=yes
+    )
+
 endforeach()
+
+
