@@ -1,10 +1,5 @@
 #pragma once
-
 #include <vector>
-#include <limits>
-#include <stdexcept>
-#include <atomic>
-#include <iostream>
 
 // 完全二叉树
 // 假设二叉树的深度为 K, 除了 K 层之外，其他层的的节点数量达到最大层。
@@ -48,6 +43,17 @@ struct TreeNode
 };
 
 /**
+ *          1
+ *         / \
+ *        2   3
+ *      / \   / \
+ *     4   5 6   7
+ *
+ *    1 2 4 5 3 6 7
+ *    4 2 5 1 6 3 7
+ */
+
+/**
  * \brief 构建一棵简单二叉树
  * \return
  */
@@ -86,7 +92,6 @@ std::vector<int> preorderTravel(TreeNode* node);
  */
 void preorderTravel(TreeNode* node, std::vector<int>& out);
 
-
 /**
  * \brief 二叉树的层序遍历
  *  非递归则需要使用队列实现
@@ -99,16 +104,33 @@ std::vector<int> layerTravel(TreeNode* node);
  *
  */
 void PrintTreeByLayer(TreeNode* node);
-
-
-std::vector<int> postorderTravel(TreeNode* node);
-
+/**
+ * \brief 中序遍历
+ */
 std::vector<int> midorderTravel(TreeNode* node);
 
+/**
+ * \brief 递归中序遍历
+ */
+void midorderTravel(TreeNode* node, std::vector<int>& out);
 
 /**
- * \brief 给定一个二叉树和一个整数 sum,
- * 找出所有根节点到叶子节点的路径，这些路径上的节点值累加为 sum 的路径 \param
- * node \param target \return
+ * \brief 后序遍历
  */
-std::vector<std::vector<int>> treepathOfSum(TreeNode* node, int target);
+std::vector<int> postorderTravel(TreeNode* node);
+
+std::vector<int> postorderTravel_no(TreeNode* node);
+
+/**
+ *\brief 递归的后续遍历
+ */
+void postorderTravel(TreeNode* node, std::vector<int>& out);
+
+//////////////////////////////////////////////////////////////////////////////////////
+
+/**
+ *\brief 求取一棵树的最大深度
+ *
+ */
+int depthOfTree(TreeNode* node);
+

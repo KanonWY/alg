@@ -1,9 +1,57 @@
 #include "tree.h"
 
+#include <algorithm>
 #include <stack>
 #include <queue>
 #include <iostream>
-#include <functional>
+
+/**
+ *          1
+ *         / \
+ *        2   3
+ *      / \   / \
+ *     4   5 6   7
+ *
+ *
+ *
+ * \brief
+ * \return
+ */
+TreeNode* buildTree()
+{
+    auto* a = new TreeNode(1);
+    auto* b = new TreeNode(2);
+    auto* c = new TreeNode(3);
+    auto* d = new TreeNode(4);
+    auto* e = new TreeNode(5);
+    auto* f = new TreeNode(6);
+    auto* g = new TreeNode(7);
+
+    a->left = b;
+    a->right = c;
+    b->left = d;
+    b->right = e;
+    c->left = f;
+    c->right = g;
+    return a;
+}
+
+/**
+ * \brief 前序遍历删除
+ * \param root
+ */
+void deleteTree(TreeNode* root)
+{
+    if (root)
+    {
+        const auto left = root->left;
+        const auto right = root->right;
+        // std::cout << "delete node: " << root->value << std::endl;
+        delete root;
+        deleteTree(left);
+        deleteTree(right);
+    }
+}
 
 std::vector<TreeNode*> getLeaf(TreeNode* node)
 {
@@ -133,154 +181,93 @@ void PrintTreeByLayer(TreeNode* node)
 
 std::vector<int> midorderTravel(TreeNode* node)
 {
-    if (!node)
+    if (!node) return {};
+    std::vector<int> result;
+    std::stack<TreeNode*> stack_nodes;
+    TreeNode* curNode = node;
+    stack_nodes.push(node);
+    while (!stack_nodes.empty())
     {
-        return {};
-    }
-    std::stack<TreeNode*> st;
-    std::vector<int> res;
-    TreeNode* currentNode = node;
-    st.push(currentNode);
-    while (!st.empty())
-    {
-        // 检测当前节点是否有左孩子
-        while (currentNode->left != nullptr)
+        // 找到最左边的节点位置
+        while (curNode->left)
         {
-            st.push(currentNode->left);
-            currentNode = currentNode->left;
+            stack_nodes.push(curNode->left);
+            curNode = curNode->left;
         }
-        // 弹出栈顶（此时为左叶子节点）
-        while (!st.empty())
+        while (!stack_nodes.empty())
         {
-            const auto* topNode = st.top();
-            st.pop();
-            res.push_back(topNode->value);
-            if (topNode->right != nullptr)
+            // 当前节点是当前栈顶的元素
+            TreeNode* topNode = stack_nodes.top();
+            stack_nodes.pop();
+            result.push_back(topNode->value);
+            if (topNode->right)
             {
-                st.push(topNode->right);
-                currentNode = topNode->right;
+                stack_nodes.push(topNode->right);
+                curNode = topNode->right;
                 break;
             }
         }
     }
-    return res;
+    return result;
+}
+
+void midorderTravel(TreeNode* node, std::vector<int>& out)
+{
+    if (!node) return;
+    midorderTravel(node->left, out);
+    out.push_back(node->value);
+    midorderTravel(node->right, out);
 }
 
 std::vector<int> postorderTravel(TreeNode* node)
 {
-    if (!node)
+    if (!node) return {};
+    std::vector<int> result;
+    std::stack<TreeNode*> stack_nodes;
+    stack_nodes.push(node);
+    while (!stack_nodes.empty())
     {
-        return {};
+        TreeNode* curNode = stack_nodes.top();
+        stack_nodes.pop();
+        result.push_back(curNode->value);
+        if (curNode->left) stack_nodes.push(curNode->left);
+        if (curNode->right) stack_nodes.push(curNode->right);
     }
-    std::stack<TreeNode*> st;
-    std::vector<int> res;
-    const TreeNode* currentNode = node;
-    st.push(node);
-
-    while (!st.empty())
-    {
-        // 到达左叶子节点
-        while (currentNode->left)
-        {
-            st.push(currentNode->left);
-            currentNode = currentNode->left;
-        }
-        while (!st.empty())
-        {
-            const auto* topNode = st.top();
-            // 当前节点存在右节点,将右节点压入栈内，优先处理右节点
-            if (topNode->right)
-            {
-                st.push(topNode->right);
-                break;
-            }
-            // 无右节点，插入到结果代码中
-            res.push_back(topNode->value);
-        }
-    }
-    return res;
+    std::reverse(result.begin(), result.end());
+    return result;
 }
 
-std::vector<std::vector<int>> treepathOfSum(TreeNode* node, int target)
+void postorderTravel(TreeNode* node, std::vector<int>& out)
 {
-    if (!node)
-    {
-        return {};
-    }
-    std::vector<std::vector<int>> res;
-
-    // lambda 递归函数, 必须使用 std::function 指明数据的类型
-    std::function<void(TreeNode * node, int&, int, std::vector<int>&,
-                       std::vector<std::vector<int>>&)>
-        preorder = [&](TreeNode* node, int& path_value, int target,
-                       std::vector<int>& path,
-                       std::vector<std::vector<int>>& res) -> void {
-        if (!node)
-        {
-            return;
-        }
-        path_value += node->value;
-        path.push_back(node->value);
-        if (!node->left && !node->right && path_value == target)
-        {
-            res.push_back(path);
-        }
-        preorder(node->left, path_value, target, path, res);
-        preorder(node->right, path_value, target, path, res);
-        path_value -= node->value;
-        path.pop_back();
-    };
-
-    std::vector<int> path;
-    int path_value{0};
-    preorder(node, path_value, target, path, res);
-    return res;
+    if (!node) return;
+    postorderTravel(node->left, out);
+    postorderTravel(node->right, out);
+    out.push_back(node->value);
 }
 
-/**
- *          1
- *         / \
- *        2   3
- *      / \   / \
- *     4   5 6   7
- *
- *
- *
- * \brief
- * \return
- */
-TreeNode* buildTree()
+std::vector<int> postorderTravel_no(TreeNode* node)
 {
-    auto* a = new TreeNode(1);
-    auto* b = new TreeNode(2);
-    auto* c = new TreeNode(3);
-    auto* d = new TreeNode(4);
-    auto* e = new TreeNode(5);
-    auto* f = new TreeNode(6);
-    auto* g = new TreeNode(7);
-
-    a->left = b;
-    a->right = c;
-    b->left = d;
-    b->right = e;
-    c->left = f;
-    c->right = g;
-    return a;
+    if (!node) return {};
+    std::vector<int> result;
+    std::stack<TreeNode*> stack_nodes;
+    stack_nodes.push(node);
+    while (!stack_nodes.empty())
+    {
+        TreeNode* curNode = stack_nodes.top();
+        stack_nodes.pop();
+    }
+    return result;
 }
 
-/**
- * \brief 前序遍历删除
- * \param root
- */
-void deleteTree(TreeNode* root)
+// int depthOfTree(TreeNode* node)
+// {
+//     if (!node) return 0;
+//     return std::max(depthOfTree(node->left), depthOfTree(node->right)) + 1;
+// }
+
+int depthOfTree(TreeNode* node)
 {
-    if (root)
-    {
-        const auto left = root->left;
-        const auto right = root->right;
-        // std::cout << "delete node: " << root->value << std::endl;
-        delete root;
-        deleteTree(left);
-        deleteTree(right);
-    }
+    return node
+               ? 1 + std::max(depthOfTree(node->left), depthOfTree(node->right))
+               : 0;
 }
