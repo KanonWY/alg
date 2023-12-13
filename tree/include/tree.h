@@ -86,11 +86,25 @@ std::vector<int> preorderTravel(TreeNode* node);
  */
 void preorderTravel(TreeNode* node, std::vector<int>& out);
 
+
+/**
+ * \brief 二叉树的层序遍历
+ *  非递归则需要使用队列实现
+ *  std::queue
+ */
+std::vector<int> layerTravel(TreeNode* node);
+
+/**
+ * \brief 层序打印
+ *
+ */
+void PrintTreeByLayer(TreeNode* node);
+
+
 std::vector<int> postorderTravel(TreeNode* node);
 
 std::vector<int> midorderTravel(TreeNode* node);
 
-std::vector<int> layerTravel(TreeNode* node);
 
 /**
  * \brief 给定一个二叉树和一个整数 sum,

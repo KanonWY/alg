@@ -28,7 +28,7 @@ std::vector<TreeNode*> getLeaf(TreeNode* node)
         {
             stack_nodes.push(p->left);
         }
-
+        // 如果是叶子节点则插入
         if (!p->left && !p->right)
         {
             res.push_back(p);
@@ -55,7 +55,22 @@ std::vector<int> preorderTravel(TreeNode* node)
         return {};
     }
     std::vector<int> res;
-    
+    std::stack<TreeNode*> stack_nodes;
+    stack_nodes.push(node);
+    while (!stack_nodes.empty())
+    {
+        auto* topNode = stack_nodes.top();
+        stack_nodes.pop();
+        res.push_back(topNode->value);
+        if (topNode->right)
+        {
+            stack_nodes.push(topNode->right);
+        }
+        if (topNode->left)
+        {
+            stack_nodes.push(topNode->left);
+        }
+    }
     return res;
 }
 
@@ -75,24 +90,45 @@ std::vector<int> layerTravel(TreeNode* node)
     {
         return {};
     }
-    std::vector<int> res;
+    std::vector<int> result;
     std::queue<TreeNode*> queue_nodes;
     queue_nodes.push(node);
     while (!queue_nodes.empty())
     {
-        auto p = queue_nodes.front();
-        res.push_back(p->value);
+        auto* curNode = queue_nodes.front();
+        result.push_back(curNode->value);
         queue_nodes.pop();
-        if (p->left)
+        if (curNode->left)
         {
-            queue_nodes.push(p->left);
+            queue_nodes.push(curNode->left);
         }
-        if (p->right)
+        if (curNode->right)
         {
-            queue_nodes.push(p->right);
+            queue_nodes.push(curNode->right);
         }
     }
-    return res;
+    return result;
+}
+
+void PrintTreeByLayer(TreeNode* node)
+{
+    if (!node)
+    {
+        return;
+    }
+    std::cout << "============================" << std::endl;
+    std::queue<TreeNode*> queue_nodes;
+    queue_nodes.push(node);
+    while (!queue_nodes.empty())
+    {
+        auto* top = queue_nodes.front();
+        queue_nodes.pop();
+        std::cout << top->value << " ";
+        if (top->left) queue_nodes.push(top->left);
+        if (top->right) queue_nodes.push(top->right);
+    }
+    std::cout << std::endl;
+    std::cout << "============================" << std::endl;
 }
 
 std::vector<int> midorderTravel(TreeNode* node)
@@ -242,7 +278,7 @@ void deleteTree(TreeNode* root)
     {
         const auto left = root->left;
         const auto right = root->right;
-        std::cout << "delete node: " << root->value << std::endl;
+        // std::cout << "delete node: " << root->value << std::endl;
         delete root;
         deleteTree(left);
         deleteTree(right);
