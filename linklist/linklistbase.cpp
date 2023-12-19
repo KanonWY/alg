@@ -1,4 +1,5 @@
 #include "linklist.h"
+#include <cstddef>
 #include <iostream>
 
 
@@ -47,4 +48,13 @@ void PrintLinkList(ListNode* head) {
         head = head->next;
     }
     std::cout << "nullptr" << std::endl;
+}
+
+size_t lengthOfLinkList(ListNode* head) {
+    size_t len = 0;
+    while (head) {
+        head = head->next;
+        len++;
+    }
+    return len;
 }

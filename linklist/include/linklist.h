@@ -30,3 +30,11 @@ void FreeList(ListNode* head);
  *
  */
 void PrintLinkList(ListNode* head);
+
+
+/**
+ *\brief 获取链表的长度
+ *
+ */
+
+size_t lengthOfLinkList(ListNode* head);
