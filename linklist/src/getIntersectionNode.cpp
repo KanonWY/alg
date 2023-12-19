@@ -1,6 +1,5 @@
 #include "linklist.h"
 #include <gtest/gtest.h>
-#include <type_traits>
 #include <vector>
 
 // 获取两个链表相交的节点
@@ -13,7 +12,6 @@
  *                   |
  *    H -> M -> G ->
  *               b
- *
  *    D 是交点
  *
  */
@@ -74,6 +72,7 @@ TEST(getIntersectionNode, haveNode) {
 
 
     // TEST logic
+    // intaction e value is 5
     Solution s;
     auto*    res = s.getIntersectionNode(a, h);
     std::cout << "====> " << res->value << std::endl;
@@ -85,4 +84,23 @@ TEST(getIntersectionNode, haveNode) {
         delete item;
         item = nullptr;
     }
+}
+
+TEST(getIntersectionNode, nonode) {
+    ListNode* listA = createListByVector({ 1, 2, 3, 4, 5 });
+    ListNode* listB = createListByVector({ 10, 9, 8, 7, 6 });
+
+
+    Solution s;
+    auto*    res = s.getIntersectionNode(listA, listB);
+
+    if (!res) {
+        std::cout << "===>没有相交节点" << std::endl;
+    }
+
+    EXPECT_EQ(nullptr, res);
+
+
+    FreeList(listA);
+    FreeList(listB);
 }
